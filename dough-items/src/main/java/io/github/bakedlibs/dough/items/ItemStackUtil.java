@@ -31,6 +31,15 @@ public final class ItemStackUtil {
      * @return Returns a {@link Consumer}
      */
     public static Consumer<ItemMeta> editDisplayName(String name) {
+        if (name == null) {
+            try {
+                return (meta) -> meta.setDisplayName(null);
+            } catch (Throwable e) {
+                // Some ItemMeta implementations do not support setting the display name to null
+                return (meta) -> meta.setDisplayName("");
+            }
+        }
+
         return (meta) -> meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
     }
 
